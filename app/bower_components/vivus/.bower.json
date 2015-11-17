@@ -1,0 +1,28 @@
+{
+  "name": "vivus",
+  "description": "JavaScript library to make drawing animation on SVG",
+  "main": "dist/vivus.js",
+  "licence": "MIT",
+  "ignore": [
+    "assets/",
+    "src/",
+    "test/",
+    ".gitignore",
+    ".jshintrc",
+    "gulpfile.js",
+    "index.html",
+    "package.json"
+  ],
+  "homepage": "https://github.com/maxwellito/vivus",
+  "version": "0.2.3",
+  "_release": "0.2.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.3",
+    "commit": "56a39b44ddfea3f97044d3ca0c06787430796c01"
+  },
+  "_source": "git://github.com/maxwellito/vivus.git",
+  "_target": "~0.2.3",
+  "_originalSource": "vivus",
+  "_direct": true
+}

@@ -1,0 +1,403 @@
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+
+// ---------------------------------------------
+
+$colors: (carnation: #FF4F5C, turquoise: #4EDEB9, bleu: #3387F1, nile: #1E3A4B);
+
+@function color($color, $map: $colors) {
+  @return map-get($map, $color);
+}
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #fefefe;
+
+$mainColor: color(nile);
+$headingColor: color(carnation);
+
+$mainFontSize: 36px;
+$mainFont: "More Pro", Helvetica, sans-serif;
+$headingFont: "More Pro", Helvetica, sans-serif;
+$headingTextShadow: none;
+$headingLetterSpacing: normal;
+$headingTextTransform: none;
+$headingFontWeight: 500;
+
+$linkColor: darken(color(turquoise), 15%);
+$linkColorHover: lighten($linkColor, 15%);
+$selectionBackgroundColor: lighten($linkColor, 25%);
+
+$heading1Size: 2.35em;
+$heading2Size: 1.77em;
+$heading3Size: 1em;
+$heading4Size: 1em;
+
+// Theme template ------------------------------
+@import "../template/theme";
+
+.reveal .l-half {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  > * {
+    box-sizing: border-box;
+  }
+
+  > div {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-basis: 50%;
+  }
+
+  .overlap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // > div + div {
+  //   border-left: 1px solid gray;
+  // }
+
+  > div > p {
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  pre {
+    // margin-right: 2em;
+ 
+  }
+}
+
+// Overrides 
+// ---------
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal section {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reveal {
+  ul, ol {
+    margin-left: 0;
+    padding-left: 2em;
+
+    + ul, + ol {
+      margin-top: 0.25em;
+    }
+  }
+
+  li + li {
+    margin-top: 0.25em;
+  }
+}
+
+.reveal .emp {
+  color: color(bleu);
+}
+
+section.has-dark-background {
+  &,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #fff;
+  }
+
+  h1,
+  h1 span {
+    color: color(carnation);
+  }
+
+  a {
+    color: color(turquoise);
+  }
+}
+
+.reveal table {
+  border: 1px solid #dedede;
+
+  td {
+    border: 1px solid #dedede;
+  }
+
+  thead {
+    background: color(nile);
+    color: color(carnation);
+  }
+}
+
+.reveal section img {
+  margin: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.reveal .browser-logo {
+  font-size: 1em;
+  img {
+    max-width: 100px;
+    vertical-align: middle;
+    margin: 0 0.5em;
+  }
+}
+
+.reveal .browser-logo--large {
+  img {
+    max-width: 200px;
+  }
+}
+
+.reveal pre {
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 0.66em;
+  width: 100%;
+  white-space: pre-wrap;
+  tab-size: 2;
+
+  code {
+    padding: 0.5em 1em;
+  }
+}
+
+.reveal .yay {
+  background: color(turquoise);
+  color: white;
+}
+
+// For zooming effect
+h1 span {
+  display: inline-block;
+  visibility: hidden;
+}
+
+// SVG Transitions and Animations
+
+%svgstyle {
+  svg {
+    border: 2px solid color(nile);
+  }
+}
+
+@for $i from 1 through 4 {
+  .css-#{$i},
+
+  .smil-#{$i},
+
+  .js-#{$i} {
+    @extend %svgstyle;
+  }
+}
+
+.css-1 {
+  svg rect {
+    transition: all 1s ease-out;
+  }
+
+  svg:hover rect {
+    transform: translateX(100px);
+  }
+}
+
+.css-2 {
+  svg rect {
+    animation: move 1s ease-in-out alternate infinite;
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(-50px);
+  }
+
+  100% {
+    transform: translateX(50px);
+  }
+}
+
+.css-3 {
+  position: relative;
+
+  svg rect {
+    transition: all 1s ease-out;
+  }
+
+  svg:hover rect {
+    transform: rotate(360deg);
+  }
+}
+
+.css-4 {
+  @extend .css-3;
+
+  svg rect {
+    transform-origin: 50% 50%;
+  }
+}
+
+.css-4 .fade-in {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  text-align: center;
+}
+
+#reddot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  background: red;
+}
+
+.reveal .small {
+  font-size: 0.6666em;
+}
+
+// Bouncing ball
+.ball-x {
+  animation: ball-x 2.5s ease-out;
+}
+
+.ball-y {
+  animation: ball-y 2s forwards;
+}
+
+.ball-rotate {
+  // Note: Doesn't work in Firefox
+  transform-origin: 50% 50%;
+  animation: ball-rotate 2.5s linear;
+}
+
+@keyframes ball-rotate {
+  0% {
+    transform: rotate();
+  }
+
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes ball-x {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(600px);
+  }
+}
+
+@keyframes ball-y {
+  0% {
+    transform: translateY(0);
+    animation-timing-function: ease-in;
+  }
+
+  14.28% {
+    transform: translateY(300px);
+    animation-timing-function: ease-out;
+  }
+
+  28.57% {
+    transform: translateY(150px);
+    animation-timing-function: ease-in;
+  }
+
+  42.86% {
+    transform: translateY(300px);
+    animation-timing-function: ease-out;
+  }
+
+  57.14% {
+    transform: translateY(225px);
+    animation-timing-function: ease-in;
+  }
+
+  71.43% {
+    transform: translateY(300px);
+    animation-timing-function: ease-out;
+  }
+
+  85.71% {
+    transform: translateY(262.5px);
+    animation-timing-function: ease-in;
+  }
+
+  to {
+    transform: translateY(300px);
+    animation-timing-function: ease-out;
+  }
+}
+
+// Line Drawing
+
+// Line Drawing
+.line1 path {
+  // stroke-dasharray: 20;
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  animation: dash 3s infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.lds1 path,
+.lds2 path {
+  stroke-dasharray: 300;
+  transition: all 2s linear;
+}
+
+.lds2:hover path {
+  stroke-dashoffset: -1500;
+}
+
+.lds3 path {
+  stroke-dasharray: 1500;
+  transition: all 2s linear;
+}
+
+.lds3:hover path {
+  stroke-dashoffset: -1500;
+}
+
+.lds4 path {
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  transition: all 2s linear;
+}
+
+.lds4:hover path {
+  stroke-dashoffset: 0;
+}
+
+#obturateur1 {
+  path {
+    stroke: #ff4f5c;
+    fill: none;
+  }
+}

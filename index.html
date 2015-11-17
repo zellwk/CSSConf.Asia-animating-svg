@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Animating SVGs – CSSConf.Asia</title>
+
+	<meta name="description" content="Animating SVGs slides – CSSConf.Asia">
+	<meta name="author" content="Zell Liew">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/testing.css" id="theme">
+
+	<!-- Code syntax highlighting -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section class="first section--start" data-background="#1E3A4B">
+					<h1>Animating SVGs</h1>
+				</section>
+				<section>
+					<h1>Hello! I'm Zell</h1>
+					<p class="fragment">Books: <a href="http://zell-weekeat.com/learnsusy/">Learning Susy</a> | <a href="http://automateyourworkflow.com">Automating Your Workflow</a></p>
+					<p class="fragment">Me: 
+						<a href="http://zellwk.com">http://zellwk.com</a> | <a href="http://twitter.com/zellwk">@zellwk</a>
+					</p>
+					<p></p>
+				</section>
+				<section>
+					<h1>Slides</h1>
+					<p class="fragment"><a href="#">http://some-github-url</a></p>
+				</section>
+				<section> 
+					<h2>Overview</h2> 
+					<ul>
+						<li class="fragment">Basic SVG stuff (quick one)</li>
+						<li class="fragment">Animation methods</li>
+						<li class="fragment">A more complex animation</li>
+						<li class="fragment">Cool real-world usage</li>
+					</ul>
+				</section>
+
+				<section data-background="#1e3a4b"><h1>The Basics</h1></section>
+
+				<section> 
+					<h3>Why SVG?</h3> 
+					<ul>
+						<li class="fragment">Good browser support</li>
+						<li class="fragment">Styleable</li>
+						<li class="fragment">Scalable (animations included)</li>
+					</ul>
+				</section>
+				
+				<section data-markdown>
+					<script type="text/template">
+						### Using SVGs #1 (Image)
+						```html
+						<!--html-->
+						<img src="my-svg.svg" alt="My SVG file" />
+						```
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						### Using SVGs #2 (CSS background-image)
+						```html
+						<!--html-->
+						<div class="my-svg"></div>
+						```
+						```css
+						/* CSS */
+						.my-svg {
+							background-image: url('my-svg.svg');
+						}
+						```
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						### Using SVGs #3 (Object)
+						```html
+						<!--html-->
+						<object type=”image/svg+xml” data=”mySVG.svg”>
+							<div class="fallback"></div> <!-- fallback -->
+						</object>
+						```
+
+						```css
+						/* CSS */
+						.nosvg .fallback {
+							background-image: url('my-svg.png');
+						}
+						```
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						### Using SVGs #4 (Inline SVG)
+
+						```html
+						<!-- html -->
+						<svg viewBox="0 0 100 100"> 
+							... 
+						</svg>
+						```
+					</script>
+				</section>
+				<section>
+					<h3>Using SVGs #5 - 10: ...</h3>
+					<ul>
+						<li>Data:URI</li>
+						<li>Embed</li>
+						<li>iframe</li>
+						<li>...</li>
+					</ul>
+				</section>
+
+				<section>
+					<table>
+						<thead>
+							<tr>
+								<td>Method</td>
+								<td>image</td>
+								<td>background-image</td>
+								<td>object</td>
+								<td>inline svg</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>CSS</td>
+								<td>No</td>
+								<td>in <code>svg</code></td>
+								<td>in <code>svg</code></td>
+								<td class="yay">Yes</td>
+							</tr>
+							<tr>
+								<td>SMIL</td>
+								<td>No</td>
+								<td>in <code>svg</code></td>
+								<td>in <code>svg</code></td>
+								<td class="yay">Yes</td>
+							</tr>
+							<tr>
+								<td>JavaScript</td>
+								<td>No</td>
+								<td>No</td>
+								<td>Yes</td>
+								<td class="yay">Yes</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section data-background="#1E3A4B"> <h1>Animation Methods</h1> </section>
+				<section> 
+					<h2>Animation Methods</h2> 
+					<ul>
+						<li class="fragment">CSS</li>
+						<li class="fragment">SMIL (Synchronized Multimedia Integration Language)</li>
+						<li class="fragment">JavaScript</li>
+					</ul>
+				</section>
+
+				<section>	<h2>Browser Support</h2> </section>
+				<section>
+					<table>
+						<thead>
+							<tr>
+								<td>CSS</td>
+								<td>SMIL</td>
+								<td>JavaScript</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="browser-logo fragment"><img class="browser-logo" src="images/ie.png" alt=""> 9+</td>
+								<td class="browser-logo fragment">
+									<img class="browser-logo" src="images/noie.png" alt="">
+									<img class="browser-logo" src="images/noopera.png" alt="">
+								</td>
+								<td class="browser-logo fragment"><img class="browser-logo" src="images/ie.png" alt=""> 6+</td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<div class="l-half">
+						<div>
+							<p>Translation</p>
+							<svg width="50%" height="50%" viewBox="0 0 300 300">
+								<rect width="200" height="200" y="50" fill="#4EDEB9">
+									<animateTransform
+										attributeName="transform"
+										type="translate"
+										values="0; 100; 0"
+										dur="2s"
+										repeatCount="indefinite"
+									/>
+								</rect>
+							</svg>
+						</div>
+						<div>
+							<p>Rotation</p>
+							<svg width="50%" height="50%" viewBox="0 0 300 300">
+								<rect width="200" height="200" x="50" y="50" fill="#4EDEB9"> 
+								<animateTransform 
+						      attributeName="transform"
+						      type="rotate"
+						      from="0 150 150"
+						      to="360 150 150"
+						      dur="4s"
+						      repeatCount="indefinite"
+						    />
+								</rect>
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section data-markdown>  
+					<script type="text/template">
+						### The SVG
+						```html
+						<!-- html -->
+						<svg width="200" height="200" viewBox="0 0 200 200">
+							<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" />
+						</svg>
+						```
+					</script>
+				</section>
+
+				<section data-background="#1e3a4b"> <h1>Animating with CSS</h1> </section>
+
+				<section> 
+					<h3>When to use CSS </h3> 
+					<ul>
+						<li class="fragment">Animations are simple</li>
+						<li class="fragment">Animate properties that CSS can animate</li>
+					</ul>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### Targeting SVGs
+						```css
+						/* CSS */
+						svg { /* styles here ... */}
+						```
+
+						```css
+						/* CSS */
+						svg rect { /* styles here ... */}
+						```
+					</script>
+				</section>
+
+				<section>
+					<h3>CSS Transitions - Translation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code>svg rect {
+  transition: transform 1s ease-out;
+}
+
+svg:hover rect {
+  transform: translateX(100px);
+}
+							</code></pre>
+						</div>
+						<div class="css-1">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+						</div>
+					</div>
+
+				</section>
+
+				<section>
+					<h3>CSS Animations - Translation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code>svg rect {
+  animation: move 1s ease-in-out alternate infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(-50px);
+  }
+
+  100% {
+    transform: translateX(50px);
+  }
+}						</code></pre>
+						</div>
+						<div class="css-2">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+						</div>
+					</div>
+
+				</section>
+
+				<section>
+					<h3>CSS Transitions - Rotation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code>svg rect {
+  transition: all 1s ease-out;
+}
+
+svg:hover rect {
+  transform: rotate(360deg);
+}
+							</code></pre>
+						</div>
+						<div class="css-3">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>CSS Transitions - Rotation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code>svg rect {
+  transform-origin: 50% 50%;
+  transition: all 1s ease-out;
+}
+
+svg:hover rect {
+  transform: rotate(360deg);
+}
+							</code></pre>
+						</div>
+						<div class="css-4">
+							<svg class="fragment fade-out" width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+							<div class="fragment fade-in browser-logo--large">
+								<img src="images/nofirefox.png" alt="">
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section data-background="#1E3A4B"> <h1>Animating with SMIL</h1> </section>
+				<section> 
+					<h3>When to use SMIL</h3> 
+					<ul>
+						<li class="fragment">Simple animations</li>
+						<li class="fragment">Need more control compared to CSS</li>
+						<li class="fragment">Don't need to support IE or Opera Mini</li>
+					</ul>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### SMIL Animations – The Animate Tag
+
+						Within the element <!-- .element: class="small" -->
+						```html
+						<svg>
+							<rect ... > 
+							  <animate ... /> 
+							</rect>
+						</svg>
+						```
+
+						Referencing with an id <!-- .element: class="small" -->
+						```html
+						<svg>
+							<rect id="rect" ... />
+							<animate xlink:href="rect" ... />
+						</svg>
+						```
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						### SMIL – The Animate Tag
+						```html
+						<animate 
+						  attributeName="" 
+						  from="" 
+						  to=""
+						  dur=""
+						/>
+						```
+					</script>
+				</section>
+
+				<section>
+					<h3>SMIL – Translation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs">&lt;animate
+  attributeName=&quot;x&quot; 
+  from=&quot;50&quot;
+  to=&quot;150&quot;
+  dur=&quot;1s&quot;
+  begin=&quot;click&quot;
+/&gt;					</code></pre>
+						</div>
+						<div class="smil-1">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9"> 
+								<animate
+								  attributeName="x" 
+								  from="50"
+								  to="150"
+								  dur="1s"
+								  begin="click"
+								/>	
+								</rect>
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>SMIL – Translation (with animateTransform)</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs">&lt;animateTransform 
+  attributeName=&quot;transform&quot; 
+  type=&quot;translate&quot;
+  from=&quot;0, 0&quot;
+  to=&quot;100, 0&quot;
+  dur=&quot;1s&quot;
+  begin=&quot;click&quot;
+/&gt;					</code></pre>
+						</div>
+						<div class="smil-1">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9"> 
+									<animateTransform 
+									  attributeName="transform" 
+									  type="translate"
+									  from="0, 0"
+									  to="100, 0"
+									  dur="1s"
+									  begin="click"
+									/>
+								</rect>
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>SMIL – Rotation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs">&lt;animateTransform 
+  attributeName=&quot;transform&quot;
+  type=&quot;rotate&quot;
+  from=&quot;0&quot;
+  to=&quot;360&quot;
+  dur=&quot;1s&quot;
+  begin=&quot;click&quot;
+/&gt;					</code></pre>
+						</div>
+						<div class="smil-1">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9"> 
+									<animateTransform 
+							      attributeName="transform"
+							      type="rotate"
+							      from="0"
+							      to="360"
+							      dur="1s"
+							      begin="click"
+							    />
+								</rect>
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>SMIL – Rotation (fixed)</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs">&lt;animateTransform 
+  attributeName=&quot;transform&quot;
+  type=&quot;rotate&quot;
+  from=&quot;0 100 100&quot;
+  to=&quot;360 100 100&quot;
+  dur=&quot;1s&quot;
+  repeatCount=&quot;indefinite&quot;
+  begin=&quot;click&quot;
+/&gt;					</code></pre>
+						</div>
+						<div class="smil-1">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9"> 
+									<animateTransform 
+							      attributeName="transform"
+							      type="rotate"
+							      from="0 100 100"
+							      to="360 100 100"
+							      dur="1s"
+							      repeatCount='indefinite'
+							      begin="click"
+							    />
+								</rect>
+							</svg>
+						</div>
+					</div>
+				</section>
+				
+				<section data-markdown> 
+					<script type="text/template">
+						### SMIL – More than one animation
+
+						```html
+						<animate attributeName="x" .../>
+						<animate attributeName="fill" .../>
+						```
+					</script>
+				</section>
+
+				<section>
+					<h3>SMIL – More than one animation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs">&lt;animateTransform 
+  type=&quot;rotate&quot;
+  id=&quot;rotate&quot;
+  ...
+/&gt;
+
+&lt;animate
+  attributeName=&quot;fill&quot;
+  from=&quot;#4EDEB9&quot;
+  to=&quot;#3387F1&quot;
+  dur=&quot;2s&quot;
+  repeatCount='indefinite'
+  begin=&quot;rotate.begin&quot;
+/&gt;</code></pre>
+						</div>
+						<div class="smil-1">
+							<svg width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9"> 
+									<animateTransform 
+							      attributeName="transform"
+							      type="rotate"
+							      from="0 100 100"
+							      to="360 100 100"
+							      dur="1s"
+							      repeatCount='indefinite'
+							      begin="click"
+							      id="rotate"
+							    />
+
+							    <animate
+						        attributeName="fill"
+						        from="#4EDEB9"
+						        to="#3387F1"
+						        dur="2s"
+						        repeatCount='indefinite'
+						        begin="rotate.begin"
+						      />
+								</rect>
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section data-background="#1E3A4B"> <h1>Animating with JavaScript</h1> </section>
+
+				<section> 
+					<h3>When to use JavaScript</h3> 
+					<ul>
+						<li class="fragment">Complex Animations</li>
+						<li class="fragment">Support all browsers</li>
+						<li class="fragment">Rotating SVGs...</li>
+					</ul>
+				</section>
+
+				<section> 
+					<h3>Libraries</h3> 
+					<ul>
+					  <li class="fragment"><a href="http://greensock.com">GSAP</a></li>
+					  <li class="fragment"><a href="http://snapsvg.io/">Snap.svg</a></li>
+					  <li class="fragment">more ...</li>
+					</ul>
+				</section>
+
+				<section> 
+					<h3>Adding GSAP (TweenMax)</h3> 
+					<pre><code><!--html-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script></code></pre>
+				</section>
+				<section> 
+					<h3>GSAP Syntax</h3> 
+					<pre><code>TweenMax.method([elements], duration, destinationProps);</code></pre>
+				</section>
+				
+				<section>
+					<h3>GSAP – Translation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs js">$('rect').on('click', function() {
+  TweenMax.to('rect', 1, {
+    attr: {
+      x: '100'
+    },
+  })
+}); 					</code></pre>
+						</div>
+						<div class="js-1">
+							<svg class="jsSVG" id="svg1" width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>GSAP – Rotation</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs js">$('rect').on('click', function() {
+  TweenMax.to('rect', 1, {
+    rotation: 360
+  })
+}); 					</code></pre>
+						</div>
+						<div class="js-1">
+							<svg class="jsSVG" id="svg2" width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>GSAP – Rotation (fixed) </h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs js">$('rect').on('click', function() {
+  TweenMax.to('rect', 1, {
+    rotation: 360,
+    transformOrigin: '50% 50%'
+  })
+}); 					</code></pre>
+						</div>
+						<div class="js-1">
+							<svg class="jsSVG" id="svg3" width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>GSAP – Rotation (svgOrigin) </h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="hljs js">$('rect').on('click', function() {
+  TweenMax.to('rect', 1, {
+    rotation: 360,
+    svgOrigin: '200 200'
+  })
+}); 					</code></pre>
+						</div>
+						<div class="js-1">
+							<svg class="jsSVG" id="svg4" width="200" height="200" viewBox="0 0 200 200">
+								<rect width="100" height="100" x="50" y="50" fill="#4EDEB9" /> 
+							</svg>
+						</div>
+					</div>
+				</section>
+
+				<section data-background="#1E3A4B"> <h1>(More) complex animations</h1> </section>
+
+				<section> 
+					<svg class="jsBall" width="100%" height="600">
+					  <g class="ball" x="0" y="0" fill="#984629">
+					    <path d="M54.053 8.075c1.13-1.5.95-4.677.788-7.48-.005-.122-.012-.24-.02-.36C53.238.085 51.633 0 50.01 0c-6.223 0-12.177 1.146-17.67 3.224 3.918 1.884 9.986 5.126 16.73 9.916 2.3-1.98 4.036-3.808 4.983-5.065zm25.326 28.52c-2.465.28-4.542.684-6.32 1.25 8.495 14.832 11.807 33.568 12.617 47.143 8.415-8.575 13.76-20.166 14.265-33.005-5.798-7.127-13.48-16.19-20.563-15.386zm-50.498-12.8c5.968-1.242 11.575-4.246 16.046-7.417C35.6 9.954 27.822 6.62 26.275 5.986 16.598 11.216 8.855 19.55 4.35 29.65c5.856-2.333 12.197-3.52 18.426-4.677 2.014-.374 4.097-.76 6.106-1.18v.002z"/>
+					    <path d="M63.43 25.248c.532.535 1.064 1.08 1.59 1.635 1.948 2.044 3.715 4.28 5.335 6.645 2.36-.89 5.137-1.523 8.462-1.9 7.833-.885 14.8 5.32 20.777 12.153-1.28-10.356-5.723-19.73-12.342-27.122-3.613.435-7.64 1.173-11.745 2.398-2.693.804-6.982 2.99-12.077 6.192zM56.852 51.06c2.05-6.943 4.425-11.948 9.026-15.197-1.382-1.983-2.868-3.843-4.478-5.533-.744-.782-1.497-1.537-2.254-2.28C40.69 40.616 15.405 63.696 13.106 83.693c7.674 8.397 18.178 14.156 30.002 15.79 4.305-8.572 8.357-25.997 10.766-36.36 1.157-4.978 2.156-9.276 2.98-12.06z"/>
+					    <path d="M35.924 40.05c6.436-5.93 13.233-11.25 19.45-15.523-2.073-1.834-4.152-3.524-6.192-5.074-5.164 3.882-11.924 7.705-19.282 9.235-2.06.43-4.17.82-6.21 1.2-7.862 1.46-15.408 2.873-21.753 6.414C.7 40.652.025 45.238.025 49.984c0 10.617 3.32 20.454 8.966 28.55 3.657-14.48 16.2-28.592 26.934-38.484zM59.68 21.672c5.945-3.79 11.072-6.412 14.398-7.405 2.987-.892 5.917-1.542 8.692-2.016C76.358 6.68 68.52 2.71 59.87.98c.19 3.49.274 7.323-1.826 10.107-.998 1.323-2.686 3.136-4.882 5.104 2.15 1.673 4.337 3.5 6.517 5.482zm1.966 30.804c-.78 2.644-1.765 6.877-2.904 11.777-3.362 14.47-6.58 27.417-10.338 35.673.534.017 1.067.04 1.605.04 11.647 0 22.356-3.995 30.854-10.675-.335-14.204-3.74-34.296-12.318-49.21-3.327 2.472-5.118 6.36-6.9 12.396z"/>
+					  </g>
+					</svg>
+				</section>
+
+				<section> 
+					<ul>
+	  				<li>Translate X (ease-out)</li>
+	  				<li>Translate Y (bounce) </li>
+	  				<li>Rotate (ease-out)</li>
+					</ul>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+						### The SVG 
+
+						```html
+						<!--html-->
+						<svg width="100%" height="600">
+						  <g fill="#984629">
+						    <path d="M54.053 8.075c1.13-1.5.95-4.677.788-7.48-.005-.122-.012-.24-.02-.36C53.238.085 51.633 0 50.01 0c-6.223 0-12.177 1.146-17.67 3.224 3.918 1.884 9.986 5.126 16.73 9.916 2.3-1.98 4.036-3.808 4.983-5.065zm25.326 28.52c-2.465.28-4.542.684-6.32 1.25 8.495 14.832 11.807 33.568 12.617 47.143 8.415-8.575 13.76-20.166 14.265-33.005-5.798-7.127-13.48-16.19-20.563-15.386zm-50.498-12.8c5.968-1.242 11.575-4.246 16.046-7.417C35.6 9.954 27.822 6.62 26.275 5.986 16.598 11.216 8.855 19.55 4.35 29.65c5.856-2.333 12.197-3.52 18.426-4.677 2.014-.374 4.097-.76 6.106-1.18v.002z"/>
+						    <path d="M63.43 25.248c.532.535 1.064 1.08 1.59 1.635 1.948 2.044 3.715 4.28 5.335 6.645 2.36-.89 5.137-1.523 8.462-1.9 7.833-.885 14.8 5.32 20.777 12.153-1.28-10.356-5.723-19.73-12.342-27.122-3.613.435-7.64 1.173-11.745 2.398-2.693.804-6.982 2.99-12.077 6.192zM56.852 51.06c2.05-6.943 4.425-11.948 9.026-15.197-1.382-1.983-2.868-3.843-4.478-5.533-.744-.782-1.497-1.537-2.254-2.28C40.69 40.616 15.405 63.696 13.106 83.693c7.674 8.397 18.178 14.156 30.002 15.79 4.305-8.572 8.357-25.997 10.766-36.36 1.157-4.978 2.156-9.276 2.98-12.06z"/>
+						    <path d="M35.924 40.05c6.436-5.93 13.233-11.25 19.45-15.523-2.073-1.834-4.152-3.524-6.192-5.074-5.164 3.882-11.924 7.705-19.282 9.235-2.06.43-4.17.82-6.21 1.2-7.862 1.46-15.408 2.873-21.753 6.414C.7 40.652.025 45.238.025 49.984c0 10.617 3.32 20.454 8.966 28.55 3.657-14.48 16.2-28.592 26.934-38.484zM59.68 21.672c5.945-3.79 11.072-6.412 14.398-7.405 2.987-.892 5.917-1.542 8.692-2.016C76.358 6.68 68.52 2.71 59.87.98c.19 3.49.274 7.323-1.826 10.107-.998 1.323-2.686 3.136-4.882 5.104 2.15 1.673 4.337 3.5 6.517 5.482zm1.966 30.804c-.78 2.644-1.765 6.877-2.904 11.777-3.362 14.47-6.58 27.417-10.338 35.673.534.017 1.067.04 1.605.04 11.647 0 22.356-3.995 30.854-10.675-.335-14.204-3.74-34.296-12.318-49.21-3.327 2.472-5.118 6.36-6.9 12.396z"/>
+						  </g>
+						</svg>
+						```
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+						### CSS
+
+						```html
+						<!--html-->
+						<svg>
+						  <g class="ball-x">
+						    <g class="ball-y">
+						      <g class="ball-rotate">
+						        <path d="..." />
+						        <path d="..." />
+						        <path d="..." />
+						      </g>
+						    </g>
+						  </g>
+						</svg>
+						```
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+						### CSS
+
+						```
+						.ball-x {
+						  animation: ball-x 2.5s ease-out;
+						}
+
+						.ball-y {
+						  animation: bll-y 2s forwards;
+						}
+
+						.ball-rotate {
+						  transform-origin: 50% 50%;
+						  animation: ball-rotate 2.5s linear;
+						}		
+						```
+
+						<small class="emp">Doesn't work in firefox</small>
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+						### CSS
+
+						```
+						// CSS
+						@keyframes ball-x {
+						  0% {transform: translateX(0);}
+						  100% {transform: translateX(600px);}
+						}
+
+						@keyframes ball-rotate {
+						  0% {transform: rotate();}
+						  100% {transform: rotate(720deg);}
+						}
+						```
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+						### CSS
+
+						```
+						@keyframes ball-y {
+						  0% {
+						    transform: translateY(0);
+						    animation-timing-function: ease-in;
+						  }
+
+						  14.28% {
+						    transform: translateY(300px);
+						    animation-timing-function: ease-out;
+						  }
+
+						  28.57% {
+						    transform: translateY(150px);
+						    animation-timing-function: ease-in;
+						  }
+
+						  42.86% {
+						    transform: translateY(300px);
+						    animation-timing-function: ease-out;
+						  }
+
+						  57.14% {
+						    transform: translateY(225px);
+						    animation-timing-function: ease-in;
+						  }
+
+						  71.43% {
+						    transform: translateY(300px);
+						    animation-timing-function: ease-out;
+						  }
+
+						  85.71% {
+						    transform: translateY(262.5px);
+						    animation-timing-function: ease-in;
+						  }
+
+						  to {
+						    transform: translateY(300px);
+						    animation-timing-function: ease-out;
+						  }
+						}
+						```
+
+					</script>
+				</section>
+
+				<section>
+				<p style="height: 450px" data-height="450" data-theme-id="7929" data-slug-hash="bVzwgb" data-default-tab="result" data-user="zellwk" class='codepen'>See the Pen <a href='http://codepen.io/zellwk/pen/bVzwgb/'>bVzwgb</a> by Zell Liew (<a href='http://codepen.io/zellwk'>@zellwk</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+					<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+					### SMIL
+
+					```
+					<!--html-->
+					<svg>
+					  <g id="ball-x">
+					    <g id="ball-y">
+					      <g id="ball-rotate">
+					        <path d="..." />
+					        <path d="..." />
+					        <path d="..." />
+					      </g>
+					    </g>
+					  </g>
+					</svg>
+					```
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+					### SMIL
+
+					```
+					<!--html-->
+					<animateTransform xlink:href="#ball-x"
+					  attributeName="transform" 
+					  type="translate"
+					  from="0, 0"
+					  to="600, 0"
+					  dur="2.5s"
+					  begin="click"
+					  fill="freeze"
+					/>
+					```
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+					### SMIL
+
+					```
+					<!--html-->
+					<animateTransform xlink:href="#ball-rotate"
+					  attributeName="transform"
+					  type="rotate"
+					  begin="click"
+					  dur="2.5s"
+					  from="0 50 50"
+					  to="720 50 50"
+					/>
+					```
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+					### SMIL
+
+					```html
+					<!--html-->
+					<animateTransform xlink:href="#ball-y"
+					  attributeName="transform" 
+					  type="translate"
+					  dur="2s"
+					  begin="click"
+					  fill="freeze"
+					  values= 
+					    "0, 0;
+					    0, 300;
+					    0, 150;
+					    0, 300;
+					    0, 225;
+					    0, 300;
+					    0, 262.5;
+					    0, 300"
+					  keyTimes= 
+					    "0;
+					    0.1428;
+					    0.2857;
+					    0.4286;
+					    0.5714;
+					    0.7143;
+					    0.8571;
+					    1"
+					  calcMode="spline" 
+					  keySplines=
+					    ".42,0,1,1;
+					    0,0,.58,1;
+					    .42,0,1,1;
+					    0,0,.58,1;
+					    .42,0,1,1;
+					    0,0,.58,1;
+					    .42,0,1,1;"
+					/>
+					```
+					</script>
+				</section>
+
+				<section>
+				<p style="height: 450px" data-height="450" data-theme-id="7929" data-slug-hash="bVzwgb" data-default-tab="result" data-user="zellwk" class='codepen'>See the Pen <a href='http://codepen.io/zellwk/pen/bVzwgb/'>bVzwgb</a> by Zell Liew (<a href='http://codepen.io/zellwk'>@zellwk</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+					<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+						### JavaScript
+
+						```html
+						<!--html-->
+						<svg>
+						  <g class="ball-rotate">
+						    <path d="..." />
+						    <path d="..." />
+						    <path d="..." />
+						  </g>
+						</svg>
+						```
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+						### JavaScript
+
+						```
+						// JavaScript
+						$('svg g').click(function(event) {
+						  TweenMax.to($(this), 2.5, {
+						    x: 600,
+						    rotation: 720,
+						    transformOrigin: '50% 50%',
+						    ease: 'Power1.easeOut'
+						  });
+						  TweenMax.to($(this), 2, {
+						    y: 400,
+						    ease: 'Bounce.easeOut'
+						  });
+						});
+						```
+					</script>
+				</section>
+
+				<section> 
+					<p style="height: 500px" data-height="500" data-theme-id="7929" data-slug-hash="yYZaQb" data-default-tab="result" data-user="zellwk" class='codepen'>See the Pen <a href='http://codepen.io/zellwk/pen/yYZaQb/'>yYZaQb</a> by Zell Liew (<a href='http://codepen.io/zellwk'>@zellwk</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+						<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+				</section>
+
+				<section data-background="#1E3A4B"> <h1>Cool Real-world Effects</h1> 
+					<ul>
+					  <li class="fragment">Line Drawing</li>
+					  <li class="fragment">Shape Morphing</li>
+					</ul>
+				</section>
+
+				<section> 
+					<h3>Line Drawing</h3>
+					<div class="line1">
+					  <svg width="100%" height="252" viewBox="0 0 963 252" preserveAspectRatio="xMinYMin">
+					    <path d="M81.866 6.696c232.537 0-273.29 191.067 8.865 191.067 282.156 0 104.676-195.46 299.41-195.46 194.732 0 306.346 189.508 459.842 189.508 153.495 0 101.88 58.214 101.88 58.214" stroke="#000" stroke-width="4" fill="none"/>
+					  </svg>
+					</div>
+				</section>
+
+				<section>
+					<h3>Line Drawing - The SVG</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="html hljs">&lt;svg width=&quot;100%&quot; height=&quot;252&quot; viewBox=&quot;0 0 963 252&quot;&gt;
+  &lt;path d=&quot;M81.866 6.696c232.537 0-273.29 191.067 8.865 191.067 282.156 0 104.676-195.46 299.41-195.46 194.732 0 306.346 189.508 459.842 189.508 153.495 0 101.88 58.214 101.88 58.214&quot; 
+  stroke=&quot;#000&quot;
+  stroke-width=&quot;4&quot; 
+  fill=&quot;none&quot; 
+  /&gt;
+&lt;/svg&gt;				</code></pre>
+							
+						</div>
+						<div>
+							<svg width="90%" height="252" viewBox="0 0 963 252">
+					    	<path d="M81.866 6.696c232.537 0-273.29 191.067 8.865 191.067 282.156 0 104.676-195.46 299.41-195.46 194.732 0 306.346 189.508 459.842 189.508 153.495 0 101.88 58.214 101.88 58.214" stroke="#000" stroke-width="4" fill="none"/>
+					  	</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Line Drawing - Step 1: Split stroke up into dashes</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="css hljs">svg path {
+  stroke-dasharray: 300
+} 					</code></pre>
+						</div>
+						<div>
+							<svg class="lds1" width="90%" height="252" viewBox="0 0 963 252">
+					    	<path d="M81.866 6.696c232.537 0-273.29 191.067 8.865 191.067 282.156 0 104.676-195.46 299.41-195.46 194.732 0 306.346 189.508 459.842 189.508 153.495 0 101.88 58.214 101.88 58.214" stroke="#000" stroke-width="4" fill="none"/>
+					  	</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Line Drawing - Step 2: Offset the stroke</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="css hljs">svg path {
+  stroke-dasharray: 300;
+  transition: all 2s linear;
+}
+
+svg:hover path {
+  stroke-dashoffset: -1500;
+} 					</code></pre>
+						</div>
+						<div>
+							<svg class="lds2" width="90%" height="252" viewBox="0 0 963 252">
+					    	<path d="M81.866 6.696c232.537 0-273.29 191.067 8.865 191.067 282.156 0 104.676-195.46 299.41-195.46 194.732 0 306.346 189.508 459.842 189.508 153.495 0 101.88 58.214 101.88 58.214" stroke="#000" stroke-width="4" fill="none"/>
+					  	</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Line Drawing - Step 3: Make strokes longer</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="css hljs">svg path {
+  stroke-dasharray: 1500;
+  transition: all 2s linear;
+}
+
+svg:hover path {
+  stroke-dashoffset: -1500;
+} 					</code></pre>
+						</div>
+						<div>
+							<svg class="lds3" width="90%" height="252" viewBox="0 0 963 252">
+					    	<path d="M81.866 6.696c232.537 0-273.29 191.067 8.865 191.067 282.156 0 104.676-195.46 299.41-195.46 194.732 0 306.346 189.508 459.842 189.508 153.495 0 101.88 58.214 101.88 58.214" stroke="#000" stroke-width="4" fill="none"/>
+					  	</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Line Drawing - Step 4: Switch offset</h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="css hljs">svg path {
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  transition: all 2s linear;
+}
+
+svg:hover path {
+	stroke-dashoffset:0;
+} 					</code></pre>
+						</div>
+						<div>
+							<svg class="lds4" width="90%" height="252" viewBox="0 0 963 252">
+					    	<path d="M81.866 6.696c232.537 0-273.29 191.067 8.865 191.067 282.156 0 104.676-195.46 299.41-195.46 194.732 0 306.346 189.508 459.842 189.508 153.495 0 101.88 58.214 101.88 58.214" stroke="#000" stroke-width="4" fill="none"/>
+					  	</svg>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Line Drawing - Summary</h3>
+					<ul>
+						<li> Dasharray == path length </li>
+						<li> Dashoffset == path length </li>
+						<li> Easier with Libraries </li>
+					</ul>
+				</section>
+
+				<section> 
+					<h3>Line Drawing – Libraries</h3>
+					<div class="l-half">
+						<div>
+							<ul>
+							  <li class="fragment" data-fragment-index="1"><a href="#">Vivus JS</a></li>
+							  <li class="fragment" data-fragment-index="4"><a href="#">Gsap Draw SVG plugin</a> (paid)</li>
+							  <li class="fragment" data-fragment-index="5"><a href="https://github.com/lmgonzalves/segment">Segment</a></li>
+							</ul>
+						</div>
+						<div class="overlap">
+							<div class="fragment fade-in" data-fragment-index="2" data-vivus="true">
+								<div class="fragment fade-out" data-fragment-index="3">
+									<svg id="obturateur1" x="0px" y="0px" width="100%" height="200px" viewBox="0 0 200 200">
+										  <path stroke-width="3" stroke-miterlimit="10" d="M10,100A90,90 0,1,1 190,100A90,90 0,1,1 10,100" style="stroke-dasharray: 566px, 568px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M14.260000000000005,100A85.74,85.74 0,1,1 185.74,100A85.74,85.74 0,1,1 14.260000000000005,100" style="stroke-dasharray: 539px, 541px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M27.052999999999997,100A72.947,72.947 0,1,1 172.947,100A72.947,72.947 0,1,1 27.052999999999997,100" style="stroke-dasharray: 459px, 461px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M60.26,100A39.74,39.74 0,1,1 139.74,100A39.74,39.74 0,1,1 60.26,100" style="stroke-dasharray: 250px, 252px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M34.042,131.189L67.047,77.781" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M31.306,75.416L92.41,60.987" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M68.81,34.042L122.219,67.046" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M124.584,31.305L139.013,92.409" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M165.957,68.809L132.953,122.219" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M168.693,124.584L107.59,139.012" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M131.19,165.957L77.781,132.953" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+										  <path stroke-width="3" stroke-miterlimit="10" d="M75.417,168.693L60.987,107.59" style="stroke-dasharray: 63px, 65px; stroke-dashoffset: 0px;"></path>
+									</svg>
+								</div>
+							</div>
+							<!-- end fragment -->
+
+							<div class="fragment" style="position: absolute; top: 0; left:0; right: 0;" data-fragment-index="6" data-drawsvg="true">
+									<svg class="drawsvg" width="100%" height="150" viewBox="0 0 288 145">
+									  <g stroke="#FF4F5C" stroke-width="4" fill="none"><path d="M1 72.5C1 111.988 33.012 144 72.5 144S144 111.988 144 72.5M287 72.5C287 33.012 254.988 1 215.5 1S144 33.012 144 72.5"/></g>
+									</svg>
+							</div>
+						</div>
+					</div>
+				 </section>
+
+				<section> 
+					<h3>Shape Morphing</h3> 
+
+					<div class="shapeMorph">
+					  <svg id="circle" width="100%" height="300" viewbox="0 0 300 300" 
+					  data-morph-active="M251,150c0,93.5-29.203,143-101,143S49,243.5,49,150C49,52.5,78.203,7,150,7S251,51.5,251,150z">
+					    <path fill="#4EDEB9" d="M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z" />
+					  </svg>
+					</div>
+				</section>
+
+				<section> 
+					<div class="l-half">
+						<div>
+							<p> Starting path </p>
+							 <svg class="circle" width="100%" height="300" viewbox="0 0 300 300">
+					    	<path fill="#4EDEB9" d="M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z" />
+					  	</svg>
+					  	<pre style="width: 90%"><code class="lang html"><path d="M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z" /></code></pre>
+						</div>
+						<div>
+							<p> Path when clicked </p>
+							<svg class="circle" width="100%" height="300" viewbox="0 0 300 300" > 
+					    	<path fill="#4EDEB9" d="M251,150c0,93.5-29.203,143-101,143S49,243.5,49,150C49,52.5,78.203,7,150,7S251,51.5,251,150z" />
+					  	</svg>
+					  	<pre style="width: 90%"><code class="lang html"><path d="M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z" /></code></pre>
+						</div>
+					</div>
+				</section>
+
+				<section> 
+					<h3> 2 ways to do this: </h3>	
+					<ul>
+						<li class="fragment"> GSAP's Morph SVG plugin (paid)</li>
+						<li class="fragment"> Snap.svg </li>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+					<h3>Shape Morphing - MorphSVG</h3> 
+
+					```html
+					<svg width="100%" height="300" viewbox="0 0 300 300">
+					  <!-- start path-->
+					  <path id="start" fill="#4EDEB9" d="M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z" />
+
+					  <!-- end path-->
+					  <path id="end" style="visibility:hidden;" d="M251,150c0,93.5-29.203,143-101,143S49,243.5,49,150C49,52.5,78.203,7,150,7S251,51.5,251,150z"/>
+					</svg>
+					```
+					</div>
+					</script>
+				</section>
+
+				<section data-markdown> 
+					<script type="text/template">
+					<h3>MorphSVG</h3> 
+
+					```
+					$('svg').on('click', function() {
+					  TweenMax.to('#start', 0.1, {
+					    morphSVG: '#end',
+					    ease: Power1.easeIn
+					  })
+					  TweenMax.to('#start', 1, {
+					    morphSVG: '#start',
+					    delay: 0.1,
+					    ease: Elastic.easeOut
+					  })
+					});
+					```
+					</div>
+					</script>
+				</section>
+
+				<section>
+					<h3> MorphSVG </h3>
+					<p style="height: 266x"data-height="266" data-theme-id="7929" data-slug-hash="xwMgKx" data-default-tab="result" data-user="zellwk" class='codepen'>See the Pen <a href='http://codepen.io/zellwk/pen/xwMgKx/'>MorphSVG - sequence</a> by Zell Liew (<a href='http://codepen.io/zellwk'>@zellwk</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+				</section>		
+
+				<section>
+					<h3> MorphSVG </h3>
+					<p style="height: 300px" data-height="300" data-theme-id="7929" data-slug-hash="rOjeRq" data-default-tab="result" data-user="GreenSock" class='codepen'>See the Pen <a href='http://codepen.io/GreenSock/pen/rOjeRq/'>MorphSVG - sequence</a> by GreenSock (<a href='http://codepen.io/GreenSock'>@GreenSock</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+						<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+				</section>			
+
+				<section>
+					<h3> Shape Morphing - Snap.svg </h3>
+					
+					<pre><code class="html hljs"><script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script></code></pre>
+				</section>	
+
+				<section>
+					<h3>Snap.svg </h3>
+					<pre><code class="html hljs">&lt;svg id=&quot;button&quot; width=&quot;100%&quot; height=&quot;300&quot; viewbox=&quot;0 0 300 300&quot;&gt;
+  &lt;path fill=&quot;#4EDEB9&quot; d=&quot;M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z&quot; /&gt;
+&lt;/svg&gt;</code></pre>
+				</section>		
+
+				<section>
+					<h3>Snap.svg </h3>
+					
+					<pre><code class="javascript hljs">// Initializes Snap
+var s = Snap('#button');
+
+// Gets path element 
+var elem = s.select('path');
+
+// Start path
+var startPath = 'M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z';
+
+// End path
+var endPath = 'M251,150c0,93.5-29.203,143-101,143S49,243.5,49,150C49,52.5,78.203,7,150,7S251,51.5,251,150z';</code></pre>
+				</section>	
+
+				<section>
+					<h3>Snap.svg </h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="javascript hljs">$('#button').on('click', function() {
+  elem.animate({d: endPath}, 100, mina.easein);
+});</code></pre>
+						</div>
+						<div>
+						  <svg id="button" width="100%" height="300" viewbox="0 0 300 300">
+						  <path fill="#4EDEB9" d="M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z" />
+						</svg>
+						</div>
+					</div>
+				</section>	
+
+				<section>
+					<h3>Snap.svg </h3>
+					<div class="l-half">
+						<div>
+							<pre><code class="javascript hljs">$('#button').on('click', function() {
+  elem.animate({d: endPath}, 100, mina.easein, onComplete);
+});
+
+function onComplete () {
+  elem.animate({d: startPath}, 800, mina.elastic);
+}</code></pre>
+						</div>
+						<div>
+						  <svg id="button2" width="100%" height="300" viewbox="0 0 300 300">
+						  <path fill="#4EDEB9" d="M281,150c0,71.797-59.203,131-131,131S19,221.797,19,150S78.203,19,150,19S281,78.203,281,150z" />
+						</svg>
+						</div>
+					</div>
+				</section>	
+
+				<section>
+					<h3> Shape Morphing - Summary </h3>
+					<ul>
+						<li>Paths must have same number of points 
+						<li>(unless you use MorphSVG)</li>
+					</ul>
+				</section>
+
+				<section data-background="#1E3A4B"> <h1> End; </h1> 
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="app/bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="app/bower_components/gsap/src/minified/TweenMax.min.js"></script>
+		<script src="app/bower_components/gsap/src/minified/TimelineMax.min.js"></script>
+		<script src="app/bower_components/Snap.svg/dist/snap.svg-min.js"></script>
+		<script src="app/bower_components/vivus/dist/vivus.min.js"></script>
+		<script src="lib/js/segment.js"></script>
+		
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				width: 1152,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+				{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{ src: 'plugin/zoom-js/zoom.js', async: true },
+				{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+		<script src="js/main.js"></script>
+
+
+	</body>
+	</html>
