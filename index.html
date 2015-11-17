@@ -52,7 +52,7 @@
 				</section>
 				<section>
 					<h1>Slides</h1>
-					<p class="fragment"><a href="#">http://some-github-url</a></p>
+					<p class="fragment"><a href="https://github.com/zellwk/CSSConf.Asia-animating-svg">https://github.com/zellwk/CSSConf.Asia-animating-svg</a></p>
 				</section>
 				<section> 
 					<h2>Overview</h2> 
@@ -403,7 +403,7 @@ svg:hover rect {
 						```html
 						<svg>
 							<rect id="rect" ... />
-							<animate xlink:href="rect" ... />
+							<animate xlink:href="#rect" ... />
 						</svg>
 						```
 					</script>
@@ -1145,8 +1145,8 @@ svg:hover path {
 					<div class="l-half">
 						<div>
 							<ul>
-							  <li class="fragment" data-fragment-index="1"><a href="#">Vivus JS</a></li>
-							  <li class="fragment" data-fragment-index="4"><a href="#">Gsap Draw SVG plugin</a> (paid)</li>
+							  <li class="fragment" data-fragment-index="1"><a href="https://maxwellito.github.io/vivus/">Vivus JS</a></li>
+							  <li class="fragment" data-fragment-index="4"><a href="https://greensock.com/drawSVG">Gsap Draw SVG plugin</a> (paid)</li>
 							  <li class="fragment" data-fragment-index="5"><a href="https://github.com/lmgonzalves/segment">Segment</a></li>
 							</ul>
 						</div>
@@ -1172,8 +1172,8 @@ svg:hover path {
 							<!-- end fragment -->
 
 							<div class="fragment" style="position: absolute; top: 0; left:0; right: 0;" data-fragment-index="6" data-drawsvg="true">
-									<svg class="drawsvg" width="100%" height="150" viewBox="0 0 288 145">
-									  <g stroke="#FF4F5C" stroke-width="4" fill="none"><path d="M1 72.5C1 111.988 33.012 144 72.5 144S144 111.988 144 72.5M287 72.5C287 33.012 254.988 1 215.5 1S144 33.012 144 72.5"/></g>
+									<svg  width="100%" height="150" viewBox="0 0 288 145">
+									  <g stroke="#FF4F5C" stroke-width="4" fill="none"><path id="drawsvg" d="M1 72.5C1 111.988 33.012 144 72.5 144S144 111.988 144 72.5M287 72.5C287 33.012 254.988 1 215.5 1S144 33.012 144 72.5"/></g>
 									</svg>
 							</div>
 						</div>

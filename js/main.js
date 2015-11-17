@@ -71,7 +71,6 @@ $('rect').on('click', function(event) {
   /* Act on the event */
 });
 
-
 // More complex anims (JS Bouncing Ball)
 
 var $ball = $('.jsBall .ball');
@@ -89,7 +88,6 @@ $ball.click(function(event) {
   });
 });
 
-
 Reveal.addEventListener('fragmentshown', function(event) {
 
   if ($(event.fragment).attr('data-vivus')) {
@@ -99,15 +97,15 @@ Reveal.addEventListener('fragmentshown', function(event) {
   }
 
   if ($(event.fragment).attr('data-drawsvg')) {
-    var segment = new Segment($('.drawsvg path'));    
-    TweenMax.to($('.drawsvg .path'), 2, {
-      strokeDashArray: segment.strokeDasharray('25%', '75%') 
-    })
-  }  
+    var myPath = $('#drawsvg').get(0);
+    segment = new Segment(myPath);
+    segment.draw('50%', '50%', 0);
+
+    TweenMax.to(myPath, 1.5, {strokeDasharray: segment.strokeDasharray('0%', '100%')});
+  }
 });
 
-
-// Shape Morphing 
+// Shape Morphing
 var circle = Snap('#circle');
 
 $('#circle').on('click', function(event) {
@@ -136,6 +134,6 @@ $('#button2').on('click', function() {
   elem2.animate({d: endPath}, 100, mina.easein, onComplete);
 });
 
-function onComplete () {
+function onComplete() {
   elem2.animate({d: startPath}, 800, mina.elastic);
 }
